@@ -6,7 +6,7 @@ import './Logo.css'
 const Logo = () => {
   return (
       <Tilt 
-        className="Tilt br2 shadow-2 w3" tiltMaxAngleX={55}
+        className="Tilt br2 shadow-2 w3 ma4" tiltMaxAngleX={55}
         style={{paddingTop: '5px'}}
       >
         <div className="Tilt Tilt-inner pa3">
