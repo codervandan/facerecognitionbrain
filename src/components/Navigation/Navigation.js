@@ -1,15 +1,18 @@
-import React from 'react';
+import React from "react";
 
-const Navigation = () => {
+const Navigation = ({ isSignedIn, onRouteChange }) => {
   return (
-      <nav style={{
-        display: 'flex',
-        justifyContent: 'flex-end'
-      }}>
-        <p>Sign Out</p>
-      </nav>
-    );
-}
+    <nav style={{ display: "flex", justifyContent: "flex-end", padding: "1rem" }}>
+      {isSignedIn && (
+        <p
+          onClick={() => onRouteChange("signout")}
+          style={{ cursor: "pointer", fontWeight: "bold" }}
+        >
+          Sign Out
+        </p>
+      )}
+    </nav>
+  );
+};
 
-export default Navigation
-
+export default Navigation;
