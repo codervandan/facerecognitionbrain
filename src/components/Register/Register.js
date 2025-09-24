@@ -18,7 +18,8 @@ const Register = ({ onRouteChange, loadUser }) => {
           const text = await response.text();
           throw new Error(text || "Server error");
         }
-        return response.json();
+        return JSON.parse(text);
+        // return response.json();
       })
       .then(user => {
         if (user.id) {
