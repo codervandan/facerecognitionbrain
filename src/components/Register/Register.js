@@ -4,30 +4,32 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
-  event.preventDefault();
+    event.preventDefault();
+    setError(""); // Reset error on new submit
 
-  fetch("https://smart-brain-api-1-8bur.onrender.com/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, name, password })
-  })
-    .then(async response => {
-      const text = await response.text(); // define here
-      if (!response.ok) {
-        throw new Error(text || "Server error");
-      }
-      return JSON.parse(text);
+    fetch("https://smart-brain-api-1-8bur.onrender.com/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name, password })
     })
-    .then(user => {
-      if (user.id) {
-        loadUser(user);
-        onRouteChange("home");
-      }
-    })
-    .catch(err => alert(err.message));
-};
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Server error");
+        }
+        return data;
+      })
+      .then(user => {
+        if (user.id) {
+          loadUser(user);
+          onRouteChange("home");
+        }
+      })
+      .catch(err => setError(err.message));
+  };
 
   return (
     <div>
@@ -36,6 +38,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           <form className="measure" onSubmit={handleSubmit}>
             <fieldset id="register" className="ba b--transparent ph0 mh0">
               <legend className="f2 fw6 ph0 mh0">Register</legend>
+              {error && <p className="red">{error}</p>} {/* Display backend errors */}
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                 <input
@@ -68,6 +71,7 @@ const Register = ({ onRouteChange, loadUser }) => {
                   name="password"
                   id="password"
                   value={password}
+                  autoComplete="current-password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
