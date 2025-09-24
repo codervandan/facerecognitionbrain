@@ -6,29 +6,28 @@ const Register = ({ onRouteChange, loadUser }) => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    fetch("https://smart-brain-api-1-8bur.onrender.com/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name, password })
+  fetch("https://smart-brain-api-1-8bur.onrender.com/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, name, password })
+  })
+    .then(async response => {
+      const text = await response.text(); // define here
+      if (!response.ok) {
+        throw new Error(text || "Server error");
+      }
+      return JSON.parse(text);
     })
-      .then(async response => {
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text || "Server error");
-        }
-        return JSON.parse(text);
-        // return response.json();
-      })
-      .then(user => {
-        if (user.id) {
-          loadUser(user); // store new user in App.js
-          onRouteChange("home"); // go to image detection page
-        }
-      })
-      .catch(err => alert(err.message));
-  };
+    .then(user => {
+      if (user.id) {
+        loadUser(user);
+        onRouteChange("home");
+      }
+    })
+    .catch(err => alert(err.message));
+};
 
   return (
     <div>
