@@ -1,3 +1,24 @@
 .Tilt {
   background: linear-gradient(89deg, #ff5edf 0%, #04c8de 100%);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Tilt-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container {
+  margin: 20px auto;
+  width: 200px;
+}
+
+.logo-image {
+  width: 100%;
+  height: auto;
+  display: block;
 }

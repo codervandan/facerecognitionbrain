@@ -1,14 +1,32 @@
 import React, { useState } from "react";
 
-const Register = ({ onRouteChange }) => {
+const Register = ({ onRouteChange, loadUser }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Registering:", { name, email, password });
-    onRouteChange("home"); // redirect to home after registration
+
+    fetch("http://localhost:3001/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name, password })
+    })
+      .then(async response => {
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || "Server error");
+        }
+        return response.json();
+      })
+      .then(user => {
+        if (user.id) {
+          loadUser(user); // store new user in App.js
+          onRouteChange("home"); // go to image detection page
+        }
+      })
+      .catch(err => alert(err.message));
   };
 
   return (
@@ -19,9 +37,7 @@ const Register = ({ onRouteChange }) => {
             <fieldset id="register" className="ba b--transparent ph0 mh0">
               <legend className="f2 fw6 ph0 mh0">Register</legend>
               <div className="mt3">
-                <label className="db fw6 lh-copy f6" htmlFor="name">
-                  Name
-                </label>
+                <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                 <input
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="text"
@@ -33,9 +49,7 @@ const Register = ({ onRouteChange }) => {
                 />
               </div>
               <div className="mt3">
-                <label className="db fw6 lh-copy f6" htmlFor="email-address">
-                  Email
-                </label>
+                <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                 <input
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="email"
@@ -47,9 +61,7 @@ const Register = ({ onRouteChange }) => {
                 />
               </div>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="password">
-                  Password
-                </label>
+                <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                 <input
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="password"
