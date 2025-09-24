@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Navigation from "./components/Navigation/Navigation";
-import Signin from "./components/Signin/Signin";
-import Register from "./components/Register/Register";
-import Facerecognition from "./components/Facerecognition/Facerecognition";
-import Logo from "./components/Logo/Logo";
-import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
-import Rank from "./components/Rank/Rank";
+import Navigation from "./components/Navigation/Navigation.js";
+import Signin from "./components/Signin/Signin.js";
+import Register from "./components/Register/Register.js";
+import Facerecognition from "./components/Facerecognition/Facerecognition.js";
+import Logo from "./components/Logo/Logo.js";
+import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm.js";
+import Rank from "./components/Rank/Rank.js";
 import ParticlesBg from "particles-bg";
 import "./App.css";
 

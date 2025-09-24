@@ -8,7 +8,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch("http://localhost:3001/register", {
+    fetch("https://smart-brain-api-1-8bur.onrender.com/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, name, password })
