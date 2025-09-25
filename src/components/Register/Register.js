@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 
+const API_URL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3001'
+  : 'https://smart-brain-api-1-8bur.onrender.com';
+
 const Register = ({ onRouteChange, loadUser }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setError(""); // Reset error on new submit
 
-    fetch("https://smart-brain-api-1-8bur.onrender.com/register", {
+    fetch(`${API_URL}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, name, password })
     })
       .then(async response => {
-        const data = await response.json();
+        const text = await response.text();
         if (!response.ok) {
-          throw new Error(data.error || "Server error");
+          throw new Error(text || "Server error");
         }
-        return data;
+        return JSON.parse(text);
       })
       .then(user => {
         if (user.id) {
@@ -28,7 +30,7 @@ const Register = ({ onRouteChange, loadUser }) => {
           onRouteChange("home");
         }
       })
-      .catch(err => setError(err.message));
+      .catch(err => alert(err.message));
   };
 
   return (
@@ -38,7 +40,6 @@ const Register = ({ onRouteChange, loadUser }) => {
           <form className="measure" onSubmit={handleSubmit}>
             <fieldset id="register" className="ba b--transparent ph0 mh0">
               <legend className="f2 fw6 ph0 mh0">Register</legend>
-              {error && <p className="red">{error}</p>} {/* Display backend errors */}
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                 <input
@@ -71,7 +72,6 @@ const Register = ({ onRouteChange, loadUser }) => {
                   name="password"
                   id="password"
                   value={password}
-                  autoComplete="current-password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
